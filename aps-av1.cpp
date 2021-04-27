@@ -6,200 +6,341 @@ Disciplina: Estrutura de Dados
 Turma: 162
 Professor: Manuel Martins Filho
 */
-
 #include<stdio.h>
 #include<stdlib.h>
-#include<string.h>
-#include<locale.h>
 
-struct Node{
- int num;
- struct Node *prox;
-};
-typedef struct Node node;
+//Limite do vetor
+int const tamMax = 10;
 
-int tam;
+//Vetores
+int tamanho=0, lista[tamMax], fila[tamMax], pilha[tamMax];
 
-int menu(void);
-void inicia(node *PILHA);
-void opcao(node *PILHA, int op);
-void exibe(node *PILHA);
-void libera(node *PILHA);
-void push(node *PILHA);
-node *pop(node *PILHA);
+int const elemento = 0;
 
+bool taCheia(){
+    if(tamanho==tamMax-1) {	//verifica se a lista esta cheia
+        return true;
+	}
+    else {
+        return false;
+    }
 
-int main(void)
-{
- node *PILHA = (node *) malloc(sizeof(node));
- if(!PILHA){
-  printf("Sem memoria disponivel!\n");
-  exit(1);
- }else{
- inicia(PILHA);
- int opt;
-
- do{
-  opt=menu();
-  opcao(PILHA,opt);
- }while(opt);
-
- free(PILHA);
- return 0;
- }
 }
 
-void inicia(node *PILHA)
-{
- PILHA->prox = NULL;
- tam=0;
+bool taVazia(){
+    if(tamanho==0) {//verifica se a lista esta vazia
+        return true;
+	}
+    else {
+        return false;
+    }
 }
 
-int menu(void)
-{
- int opt;
+int movePraTras(int valor) {
+    int i;
 
- printf("Escolha a opcao\n");
- printf("0. Sair\n");
- printf("1. Zerar PILHA\n");
- printf("2. Exibir PILHA\n");
- printf("3. PUSH\n");
- printf("4. POP\n");
- printf("Opcao: "); scanf("%d", &opt);
+    for( i=tamanho; i>0 && valor<lista[i-1]; i--) {// faz com que os elementos deem um passo para tras
+        lista[i]=lista[i-1];
+	}
 
- return opt;
+    return i;
 }
 
-void opcao(node *PILHA, int op)
-{
- node *tmp;
- switch(op){
-  case 0:
-   libera(PILHA);
-   break;
-
-  case 1:
-   libera(PILHA);
-   inicia(PILHA);
-   break;
-
-  case 2:
-   exibe(PILHA);
-   break;
-
-  case 3:
-   push(PILHA);
-   break;
-
-  case 4:
-   tmp= pop(PILHA);
-   if(tmp != NULL)
-   printf("Retirado: %3d\n\n", tmp->num);
-   break;
-
-  default:
-   printf("Comando invalido\n\n");
- }
+void movePraFrente() {
+    int i, j;
+        for(j=i;j<tamanho-1;j++) {
+            lista[j]=lista[j+1];//faz os elementos darem um passo a frente
+        }
 }
 
-int vazia(node *PILHA)
+void inserir(int estrutura){
+  int numero, i;
+  
+  switch (estrutura){
+    case 1:
+        system("cls");
+
+        printf("\n ========== INSERIR NA LISTA ==========");
+        printf("\n\n Digite um item da lista: "); scanf("%d",&numero);
+        i = movePraTras(numero);
+
+        lista[i]=numero;//elemento é inserido na posição que o loop parou
+        tamanho++;
+
+        if (!(taCheia())) {
+            printf("\n inserido com sucesso!\n\n");
+            system("pause");
+        }
+        else {
+            printf("\n\tErro: Lista cheia!\n\n");
+            system("pause");
+        }
+        break;
+    case 2:
+        system("cls");
+
+        printf("\n ========== INSERIR NA FILA ==========");
+        printf("\n\n Digite um numero: ");scanf("%d",&numero);
+        printf("\n inserido com sucesso!\n\n");
+        system("pause");
+        break;
+    case 3:
+        system("cls");
+
+        printf("\n ========== PUSH ==========");
+        printf("\n\n Digite um numero: ");scanf("%d",&numero);
+        printf("\n inserido com sucesso!\n\n");
+        system("pause");
+        break;
+    default:
+        system("cls");
+        printf("\n\n operacao invalida");
+        break;
+  }
+
+}
+
+void remover(int estrutura){
+    int numero, i, cont=0;
+    
+    switch (estrutura){
+        case 1:
+            system("cls");
+
+            printf("\n ========== EXCLUIR NA LISTA ==========");
+            printf("\n\n Digite um item da lista: ");scanf("%d",&numero);
+            if (!(taVazia())) {
+                for(i=0; i<tamanho && numero>=lista[i]; i++) {
+                    if(numero==lista[i]) {
+                        movePraFrente();
+                        tamanho--;
+                        i--;//faz o i voltar para o caso de haver numero repetidos
+                        cont++;
+                    }
+                }
+
+                if(cont!=0)
+                    printf("\nElemento removido com sucesso!");
+                else
+                    printf("\n\tERRO: valor nao esta na lista");
+                system("pause");
+            }
+            else {
+                printf("\n\tErro: Lista vazia!\n\n");
+                system("pause");
+            }
+            break;
+        case 2:
+            system("cls");
+
+            printf("\n ========== EXCLUIR NA FILA ==========");
+            printf("\n\n Digite um numero: ");scanf("%d",&numero);
+            printf("\n excluído com sucesso!\n\n");
+            system("pause");
+            break;
+        case 3:
+            system("cls");
+
+            printf("\n ========== POP ==========");
+            printf("\n\n Digite um numero: ");scanf("%d",&numero);
+            printf("\n excluído com sucesso!\n\n");
+            system("pause");
+            break;
+        default:
+            system("cls");
+            printf("\n\n operacao invalida");
+            break;
+    }
+}
+
+
+// Espaço para a função de ordenação dos Vetores
+
+
+void imprimir(int estrutura){
+    int i;
+    switch (estrutura){
+        case 1:
+            system("cls");
+
+            printf("\n ========== IMPRIMIR LISTA ==========\n\n");
+                for (i=0; i<=tamMax-1; i++) {
+                    printf("[ %d ", lista[i], "]\n\n");
+                }
+            system("pause");
+            break;
+        case 2:
+            system("cls");
+
+            printf("\n ========== IMPRIMIR FILA ==========\n\n");
+            system("pause");
+            break;
+        case 3:
+            system("cls");
+
+            printf("\n ========== IMPRIMIR PILHA ==========\n\n");
+            system("pause");
+            break;
+        default:
+            system("cls");
+            printf("\n\n operacao invalida");
+            break;
+    }
+}
+
+void menuLista(int opcaoEscolhida){
+    int opcao;
+
+    do{
+        system("cls");
+        printf("\n ========== MENU DA LISTA ==========");
+        printf("\n\n Selecione uma opcao: ");
+        printf("\n 1 - Inserir dados na Lista");
+        printf("\n 2 - Excluir dados da Lista");
+        printf("\n 3 - Imprimir Lista");
+        printf("\n 0 - Sair");
+        printf("\n\n Opcao: "); scanf("%d",&opcao);
+
+        switch (opcao)
+        {
+            case 0:
+                printf("\n Saindo...");
+                printf("\n==================================================\n");
+                system("pause");
+                break;
+            case 1:
+                inserir(opcaoEscolhida);
+                imprimir(opcaoEscolhida);
+                break;
+            case 2:
+                remover(opcaoEscolhida);
+                imprimir(opcaoEscolhida);
+                break;
+            case 3:
+                imprimir(opcaoEscolhida);
+                break;
+            default:
+                printf("\n Comando inválido!");
+                break;
+        }
+    }while(opcao!=0);
+
+}
+
+void menuFila(int opcaoEscolhida){
+    int opcao;
+
+    do{
+        system("cls");
+        printf("\n ========== MENU DA FILA ==========");
+        printf("\n\n Selecione uma opcao: ");
+        printf("\n 1 - Inserir(no final)");
+        printf("\n 2 - Excluir(no comeco)");
+        printf("\n 3 - Imprimir Fila");
+        printf("\n 0 - Sair");
+        printf("\n\n Opcao: "); scanf("%d",&opcao);
+
+        switch (opcao)
+        {
+            case 0:
+                printf("\n Saindo...");
+                printf("\n==================================================\n");
+                system("pause");
+                break;
+            case 1:
+                inserir(opcaoEscolhida);
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            default:
+                printf("\n Comando inválido!");
+                break;
+        }
+    }while(opcao!=0);
+
+}
+
+void menuPilha(int opcaoEscolhida){
+    int opcao;
+
+    do{
+        system("cls");
+        printf("\n ========== MENU DA PILHA ==========");
+        printf("\n\n Selecione uma opcao: ");
+        printf("\n 1 - Push");
+        printf("\n 2 - Pop");
+        printf("\n 3 - Imprimir Pilha");
+        printf("\n 0 - Sair");
+        printf("\n\n Opcao: "); scanf("%d",&opcao);
+
+        switch (opcao)
+        {
+            case 0:
+                printf("\n Saindo...");
+                printf("\n==================================================\n");
+                system("pause");
+                break;
+            case 1:
+                inserir(opcaoEscolhida);
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            default:
+                printf("\n Comando inválido!");
+                break;
+        }
+    }while(opcao!=0);
+
+}
+
+void menuPrincipal(){
+    int menu_principal;
+
+    do{
+        system("cls");
+        printf("\n ========== Bem Vindo a Aps de Estrutura de Dados ==========");
+        printf("\n-----------------------------------------by Wendel Nogueira");
+        printf("\n\nO que vamos montar hoje?");
+        printf("\n\n Selecione uma opção: ");
+        printf("\n 1 - Lista");
+        printf("\n 2 - Fila");
+        printf("\n 3 - Pilha");
+        printf("\n 0 - Sair");
+        printf("\n\n Opcao: "); scanf("%d",&menu_principal);
+
+        switch (menu_principal)
+        {
+            case 0:
+                printf("\n Até a próxima!");
+                printf("\n==================================================\n");
+                system("pause");
+                break;
+            case 1:
+                menuLista(menu_principal);
+                break;
+            case 2:
+                menuFila(menu_principal);
+                break;
+            case 3:
+                menuPilha(menu_principal);
+                break;
+            default:
+                printf("\n Comando inválido!");
+                break;
+        }
+    }while(menu_principal!=0);
+
+}
+
+
+
+int main(int argc, char const *argv[])
 {
- if(PILHA->prox == NULL)
-  return 1;
- else
+    menuPrincipal();
+  
   return 0;
 }
-
-node *aloca()
-{
- node *novo=(node *) malloc(sizeof(node));
- if(!novo){
-  printf("Sem memoria disponivel!\n");
-  exit(1);
- }else{
-  printf("Novo elemento: "); scanf("%d", &novo->num);
-  return novo;
- }
-}
-
-
-void exibe(node *PILHA)
-{
- if(vazia(PILHA)){
-  printf("PILHA vazia!\n\n");
-  return ;
- }
-
- node *tmp;
- tmp = PILHA->prox;
- printf("PILHA:");
- while( tmp != NULL){
-  printf("%5d", tmp->num);
-  tmp = tmp->prox;
- }
- printf("\n        ");
- int count;
- for(count=0 ; count < tam ; count++)
-  printf("  ^  ");
- printf("\nOrdem:");
- for(count=0 ; count < tam ; count++)
-  printf("%5d", count+1);
-
-
- printf("\n\n");
-}
-
-void libera(node *PILHA)
-{
- if(!vazia(PILHA)){
-  node *proxNode,
-     *atual;
-
-  atual = PILHA->prox;
-  while(atual != NULL){
-   proxNode = atual->prox;
-   free(atual);
-   atual = proxNode;
-  }
- }
-}
-
-void push(node *PILHA)
-{
- node *novo=aloca();
- novo->prox = NULL;
-
- if(vazia(PILHA))
-  PILHA->prox=novo;
- else{
-  node *tmp = PILHA->prox;
-
-  while(tmp->prox != NULL)
-   tmp = tmp->prox;
-
-  tmp->prox = novo;
- }
- tam++;
-}
-
-
-node *pop(node *PILHA)
-{
- if(PILHA->prox == NULL){
-  printf("PILHA ja vazia\n\n");
-  return NULL;
- }else{
-  node *ultimo = PILHA->prox,
-              *penultimo = PILHA;
-
-  while(ultimo->prox != NULL){
-   penultimo = ultimo;
-   ultimo = ultimo->prox;
-  }
-
-  penultimo->prox = NULL;
-  tam--;
-  return ultimo;
- }
-}
-

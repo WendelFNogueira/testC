@@ -1,11 +1,10 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<locale>
-#include<string.h>
+
 
 //Declarando o nó
 typedef struct node{
-    char *frase;
+    int num;
     struct node *proximo;
 } no;
 
@@ -16,9 +15,9 @@ node* criar_no(){
 }
 
 //Inserindo os dados no vetor Lista
-node* inserirNoInicio(node* lista, char dado){
+node* inserirNoInicio(node* lista, int dado){
     node *novo_no = criar_no();
-    novo_no->frase[100] = dado;
+    novo_no->num = dado;
 
     if(lista == NULL){
         lista = novo_no;
@@ -37,9 +36,9 @@ void imprimirLista(node* lista){
     int contador = 1;
 
     system("cls");
-    printf("\n ========== Lista de Compras ============");
+    printf("\n ========== Lista ============\n\n");
     while(aux != NULL){
-        printf("\n%d - %s", contador, aux->frase);
+        printf("[ %d - %d ]", contador, aux->num);
         aux = aux->proximo;
         contador = contador+1;
     }
@@ -48,26 +47,23 @@ void imprimirLista(node* lista){
 }
 
 int inserir(){
-    char palavra[100];
-
-    setlocale(LC_ALL, "Portuguese");
+    int numero;
 
     system("cls");
 
-    printf("\n ========== INSERIR NA LISTA DE COMPRAS ==========");
-    printf("\n\n Digite um item da lista: ");scanf(" %[^\n]", palavra);
+    printf("\n ========== INSERIR NA LISTA ==========");
+    printf("\n\n Digite um item da lista: ");scanf("%d",&numero);
     printf("\n inserido com sucesso!\n\n");
     system("pause");
-    return palavra[100];
+    return numero;
 
 }
 
 void menu(node* lista){
     int opcao;
-    char frase[100];
+    int num;
 
     do{
-        setlocale(LC_ALL, "Portuguese");
         system("cls");
         printf("\n ========== MENU DA LISTA ==========");
         printf("\n\n Selecione uma opção: ");
@@ -85,8 +81,8 @@ void menu(node* lista){
                 system("pause");
                 break;
             case 1:
-                frase[100] = inserir();
-                lista = inserirNoInicio(lista, frase[100]);
+                num = inserir();
+                lista = inserirNoInicio(lista, num);
                 break;
             case 2:
                 break;
@@ -94,6 +90,7 @@ void menu(node* lista){
                 imprimirLista(lista);
                 break;
             default:
+                printf("\n Comando inválido!");
                 break;
         }
     }while(opcao!=0);
