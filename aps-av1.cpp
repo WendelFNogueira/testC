@@ -62,12 +62,13 @@ void inserir(int estrutura){
 
         printf("\n ========== INSERIR NA LISTA ==========");
         printf("\n\n Digite um item da lista: "); scanf("%d",&numero);
-        i = movePraTras(numero);
-
-        lista[i]=numero;//elemento é inserido na posição que o loop parou
-        tamanho++;
 
         if (!(taCheia())) {
+            
+            i = movePraTras(numero);
+
+            lista[i]=numero;//elemento é inserido na posição que o loop parou
+            tamanho++;
             printf("\n inserido com sucesso!\n\n");
             system("pause");
         }
@@ -305,7 +306,7 @@ void menuPrincipal(){
         printf("\n ========== Bem Vindo a Aps de Estrutura de Dados ==========");
         printf("\n-----------------------------------------by Wendel Nogueira");
         printf("\n\nO que vamos montar hoje?");
-        printf("\n\n Selecione uma opção: ");
+        printf("\n\n Selecione uma opcao: ");
         printf("\n 1 - Lista");
         printf("\n 2 - Fila");
         printf("\n 3 - Pilha");
